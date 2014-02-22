@@ -6,6 +6,8 @@ module God
                   :start, :stop, :restart, :unix_socket, :chroot, :env, :dir,
                   :stop_timeout, :stop_signal, :umask
 
+    attr_reader :exit_code
+
     def initialize
       self.log = '/dev/null'
 
@@ -255,10 +257,10 @@ module God
           # we want to wait for them to finish
           pid = self.spawn(command)
           status = ::Process.waitpid2(pid, 0)
-          exit_code = status[1] >> 8
+          @exit_code = status[1] >> 8
 
-          if exit_code != 0
-            applog(self, :warn, "#{self.name} #{action} command exited with non-zero code = #{exit_code}")
+          if @exit_code != 0
+            applog(self, :warn, "#{self.name} #{action} command exited with non-zero code = #{@exit_code}")
           end
 
           ensure_stop if action == :stop
