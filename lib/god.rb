@@ -695,9 +695,6 @@ module God
   def self.start
     self.internal_init
 
-    # Instantiate server.
-    self.server = Socket.new(self.port, self.socket_user, self.socket_group, self.socket_perms)
-
     # Start monitoring any watches set to autostart.
     self.watches.values.each { |w| w.monitor if w.autostart? }
 
