@@ -186,8 +186,10 @@ module God
             message = format("Unhandled exception in driver loop - (%s): %s\n%s",
                              e.class, e.message, e.backtrace.join("\n"))
             applog(nil, :fatal, message)
+            break
           end
         end
+        Thread.kill(God.main)
       end
     end
 
